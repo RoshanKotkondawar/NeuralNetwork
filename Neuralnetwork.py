@@ -26,8 +26,12 @@ class NeuralNetwork:
         # Activation function (sigmoid)
         self.activation_function = lambda x: scipy.special.expit(x)
 
-    def train(self):
-        pass
+    def train(self, input_values, target_values):
+
+        targets = numpy.array(target_values, ndmin=2).T
+
+        output_values = self.query(input_values)
+
 
     def query(self, input_values):
 
