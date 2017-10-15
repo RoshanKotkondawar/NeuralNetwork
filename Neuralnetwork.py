@@ -27,11 +27,37 @@ class NeuralNetwork:
         self.activation_function = lambda x: scipy.special.expit(x)
 
     def train(self, input_values, target_values):
+        # Convert input values to 2d array
+        inputs = numpy.array(input_values, ndmin=2).T
 
+        # Convert the target values to a 2d array
         targets = numpy.array(target_values, ndmin=2).T
 
-        output_values = self.query(input_values)
+        # Calculate signals into hidden layer
+        hidden_inputs = numpy.dot(self.wih, inputs)
 
+        # Calculate the hidden outputs
+        hidden_outputs = self.actvitation_function(hidden_inputs)
+
+        # calculate signals into output layer
+        output_inputs = numpy.dot(self.who, hidden_outputs)
+
+        # calculate the final outputs
+        final_outputs = self.activation_function(output_inputs)
+
+        # Calculate the errors
+        output_errors = targets - final_outputs
+
+        # Hidden layer error is the output_errors, split by weights. recombined at hidden nodes.
+        hidden_errors = numpy.dot(self.who.T, output_errors)
+
+        # Update the weights for the links between the hidden and output layer
+        self.who += self.learning_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
+                                                   numpy.transpose(hidden_outputs))
+
+        # Update the weights for the links between the hidden and input layer
+        self.who += self.learning_rate * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
+                                                   numpy.transpose(inputs))
 
     def query(self, input_values):
 
@@ -42,15 +68,12 @@ class NeuralNetwork:
         hidden_inputs = numpy.dot(self.wih, inputs)
 
         # Calculate the hidden outputs
-
         hidden_outputs = self.actvitation_function(hidden_inputs)
 
         # calculate signals into output layer
-
         output_inputs = numpy.dot(self.who, hidden_outputs)
 
         # calculate the final outputs
-
         final_outputs = self.activation_function(output_inputs)
 
         return final_outputs
