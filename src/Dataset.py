@@ -13,7 +13,7 @@ class MnistDataset:
     def print_data(self):
 
         for record in self.data_list :
-            all_values = record.data_list.split(',')
+            all_values = record.split(',')
             current_value = all_values[0]
             image_array = numpy.asfarray(all_values[1:]).reshape((28,28))
             matplotlib.pyplot.imshow(image_array,cmap='Greys',interpolation='None')

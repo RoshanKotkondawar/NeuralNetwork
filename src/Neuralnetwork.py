@@ -26,6 +26,9 @@ class NeuralNetwork:
         # Activation function (sigmoid)
         self.activation_function = lambda x: scipy.special.expit(x)
 
+        # Score card to evaluate the nn
+        self.scorecard = []
+
     def train(self, input_values, target_values):
         # Convert input values to 2d array
         inputs = numpy.array(input_values, ndmin=2).T
