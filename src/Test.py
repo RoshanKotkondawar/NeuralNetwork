@@ -1,4 +1,6 @@
 import numpy
+from .Dataset import MnistDataset
+from .Neuralnetwork import NeuralNetwork
 
 
 class TestNn:
@@ -10,6 +12,9 @@ class TestNn:
         self.echoes = epochs
 
         self.output_nodes = dataset.get_length()
+
+        # Score card to evaluate the nn
+        self.scorecard = []
 
     def train(self):
 
@@ -45,9 +50,43 @@ class TestNn:
                 self.neuronal_network.scorecard.append(1)
             else:
                 # network's answer doesn't match correct answer, add 0 to scorecard
-                self.neuronal_network.scorecard.append(1)
+                self.neuronal_network.scorecard.append(0)
+
+    def get_score_rate(self):
+
+        score_array = numpy.asarray(self.scorecard)
+
+        return score_array.sum()/score_array.size
+
+    def print_score_rate(self):
+
+        print ("Score rate =", self.get_score_rate())
 
 
+def main():
+
+    # Creates the data sate
+    dataset = MnistDataset("mnist_dataset/mnist_test_10.csv.txt")
+
+    # Parameters for the Neural Network
+    input_nodes = dataset.get_number_of_nodes()
+    hidden_nodes = 100
+    output_nodes = 10
+    learning_rate = 0.3
+
+    # Creates the neural network
+    neural_network = NeuralNetwork(input_nodes,hidden_nodes,output_nodes,learning_rate)
+
+    # times that te nn will train
+    epochs = 5
+
+    test = TestNn(neural_network, dataset, epochs)
+
+    test.train()
+    test.query()
+    test.print_score_rate()
 
 
+if __name__ == '__main__':
+    main()
 

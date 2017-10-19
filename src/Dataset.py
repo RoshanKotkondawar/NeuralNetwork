@@ -30,4 +30,14 @@ class MnistDataset:
 
         print('Current value: %s' % current_value)
 
-    def get_length(self): return len(self.data_list)
+    def get_lines_number(self): return len(self.data_list)
+
+    def get_number_of_nodes(self):
+
+        number_of_nodes = 0
+
+        for record in self.data_list :
+            all_values = record.split(',')
+            number_of_nodes += len(all_values)
+
+        return number_of_nodes - 1

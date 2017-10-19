@@ -81,6 +81,10 @@ class NeuralNetwork:
 
         return final_outputs
 
+    def print_score(self):
+
+        print(", ".join(self.scorecard))
+
 
 
 
